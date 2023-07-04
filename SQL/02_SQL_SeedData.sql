@@ -1,7 +1,7 @@
 CREATE TABLE Departments
 (
     Id INT PRIMARY KEY IDENTITY,
-    Name NVARCHAR(255) UNIQUE,
+    Name NVARCHAR(MAX) COLLATE Cyrillic_General_CI_AS UNIQUE,
     ParentDepartmentId INT
 );
 

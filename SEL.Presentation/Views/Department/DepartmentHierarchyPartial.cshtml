@@ -1,0 +1,16 @@
+﻿@model SEL.Presentation.ViewModels.DepartmentHierarchyViewModel
+
+<ul>
+    <li>
+        @Model.Name
+        @if (Model.Children.Count > 0)
+        {
+            <ul>
+                @foreach (var childDepartment in Model.Children)
+                {
+                    @Html.Partial("DepartmentHierarchyPartial", childDepartment)
+                }
+            </ul>
+        }
+    </li>
+</ul>

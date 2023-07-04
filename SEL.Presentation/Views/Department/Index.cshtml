@@ -1,28 +1,15 @@
-﻿@model System.Collections.Generic.IEnumerable<SEL.DAL.Entities.Department>
+﻿@model List<SEL.Presentation.ViewModels.DepartmentHierarchyViewModel>
 
 @{
-    ViewBag.Title = "Отделы";
+    ViewBag.Title = "Иерархия департаментов";
     Layout = "_Layout";
 }
 
-<h2>Список отделов</h2>
+<h2>Иерархия департаментов</h2>
 
-<table>
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Имя</th>
-        <th>Id родительского отдела</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var worker in Model)
+<div>
+    @foreach (var department in Model)
     {
-        <tr>
-            <td>@worker.Id</td>
-            <td>@worker.Name</td>
-            <td>@worker.ParentDepartmentId</td>
-        </tr>
+        @Html.Partial("DepartmentHierarchyPartial", department)
     }
-    </tbody>
-</table>
+</div>

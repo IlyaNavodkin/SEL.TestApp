@@ -18,8 +18,42 @@ namespace SEL.Presentation.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var departments = departmentRepository.GetAll();
-            return View(departments);
+            var departments = departmentRepository.GetAll().ToList();
+            var departmentHierarchyViewModels = CreateDepartmentHierarchy(departments);
+            
+            return View(departmentHierarchyViewModels);
+        }
+        
+        public List<DepartmentHierarchyViewModel> CreateDepartmentHierarchy(List<Department> departments)
+        {
+            var departmentMap = new Dictionary<int, DepartmentHierarchyViewModel>();
+
+            foreach (var department in departments)
+            {
+                var departmentHierarchy = new DepartmentHierarchyViewModel
+                {
+                    Id = department.Id,
+                    Name = department.Name
+                };
+
+                departmentMap[department.Id] = departmentHierarchy;
+            }
+
+            foreach (var department in departments)
+            {
+                if (department.ParentDepartmentId.HasValue)
+                {
+                    var parentDepartment = departmentMap[department.ParentDepartmentId.Value];
+                    var childDepartment = departmentMap[department.Id];
+                    parentDepartment.Children.Add(childDepartment);
+                }
+            }
+
+            var rootDepartments = departmentMap.Values
+                .Where(d => !departmentMap.ContainsKey(d.ParentDepartment?.Id ?? 0))
+                .ToList();
+
+            return rootDepartments;
         }
     }
 }

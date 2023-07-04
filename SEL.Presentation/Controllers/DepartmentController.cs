@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SEL.BLL.Dtos;
+using SEL.BLL.Models;
+using SEL.BLL.Services.Interfaces;
 using SEL.DAL.Entities;
 using SEL.DAL.Repositories;
 using SEL.DAL.Repositories.Interfaces;
@@ -8,45 +11,25 @@ namespace SEL.Presentation.Controllers
 {
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentRepository departmentRepository;
+        private readonly IDepartmentService _departmentService;
+        private readonly IDepartmentHierarchyService _departmentHierarchyService;
 
-        public DepartmentController(IDepartmentRepository departmentRepository)
+        public DepartmentController(IDepartmentService departmentService, 
+            IDepartmentHierarchyService departmentHierarchyService)
         {
-            this.departmentRepository = departmentRepository;
+            _departmentService = departmentService;
+            _departmentHierarchyService = departmentHierarchyService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var departments = departmentRepository.GetAll().ToList();
-            var departmentHierarchyViewModels = BuildDepartmentHierarchy(departments);
+            var departments = _departmentService.GetAll().ToList();
+            var departmentHierarchyViewModels = _departmentHierarchyService
+                .BuildDepartmentHierarchy(departments);
             
             return View(departmentHierarchyViewModels);
         }
         
-        public List<DepartmentHierarchyViewModel> BuildDepartmentHierarchy(List<Department> departments)
-        {
-            var departmentDictionary = departments.ToDictionary(d => d.Id, d => new DepartmentHierarchyViewModel
-            {
-                Id = d.Id,
-                Name = d.Name,
-                Children = new List<DepartmentHierarchyViewModel>()
-            });
-
-            foreach (var department in departments)
-            {
-                if (department.ParentDepartmentId.HasValue)
-                {
-                    if (departmentDictionary.TryGetValue(department.ParentDepartmentId.Value, out var parentDepartment))
-                    {
-                        parentDepartment.Children.Add(departmentDictionary[department.Id]);
-                    }
-                }
-            }
-
-            var rootDepartments = departmentDictionary.Values.Where(d => !departments.Any(dep => dep.Id == d.Id && dep.ParentDepartmentId.HasValue)).ToList();
-
-            return rootDepartments;
-        }
     }
 }

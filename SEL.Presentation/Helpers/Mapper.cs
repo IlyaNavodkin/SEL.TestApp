@@ -1,7 +1,8 @@
-﻿using SEL.DAL.Entities;
+﻿using SEL.BLL.Dtos;
+using SEL.DAL.Entities;
 using SEL.Presentation.ViewModels;
 
-namespace SEL.Presentation
+namespace SEL.Presentation.Helpers
 {
     public static class Mapper
     {
@@ -28,7 +29,7 @@ namespace SEL.Presentation
             };
         }
         
-        public static WorkerViewModel ConvertToWorkerViewModel(Worker worker)
+        public static WorkerViewModel ConvertToWorkerViewModel(WorkerDto worker)
         {
             return new WorkerViewModel
             {
@@ -41,7 +42,7 @@ namespace SEL.Presentation
             };
         }
 
-        public static DepartmentViewModel ConvertToDepartmentViewModel(Department department)
+        public static DepartmentViewModel ConvertToDepartmentViewModel(DepartmentDto department)
         {
             return new DepartmentViewModel
             {

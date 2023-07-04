@@ -1,4 +1,5 @@
-﻿using SEL.DAL;
+﻿using SEL.BLL;
+using SEL.DAL;
 
 namespace SEL.Presentation
 {
@@ -15,7 +16,9 @@ namespace SEL.Presentation
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc();
+            
             services.AddDal(_configuration);
+            services.AddBll();
             
             services.AddMemoryCache();
             services.AddSession();

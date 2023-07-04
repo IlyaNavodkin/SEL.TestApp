@@ -1,0 +1,36 @@
+﻿using SEL.BLL.Dtos;
+using SEL.BLL.Models;
+using SEL.BLL.Services.Interfaces;
+
+namespace SEL.BLL.Services;
+
+public class DepartmentHierarchyServiceService : IDepartmentHierarchyService
+{
+    public List<DepartmentHierarchy> BuildDepartmentHierarchy(List<DepartmentDto> departments)
+    {
+        var departmentDictionary = departments
+            .ToDictionary(d => d.Id, d => new DepartmentHierarchy
+        {
+            Id = d.Id,
+            Name = d.Name,
+            Children = new List<DepartmentHierarchy>()
+        });
+
+        foreach (var department in departments)
+        {
+            if (department.ParentDepartmentId.HasValue)
+            {
+                if (departmentDictionary.TryGetValue(department.ParentDepartmentId.Value, out var parentDepartment))
+                {
+                    parentDepartment.Children.Add(departmentDictionary[department.Id]);
+                }
+            }
+        }
+
+        var rootDepartments = departmentDictionary.Values
+            .Where(d => !departments
+                .Any(dep => dep.Id == d.Id && dep.ParentDepartmentId.HasValue)).ToList();
+
+        return rootDepartments;
+    }
+}

@@ -67,9 +67,7 @@ namespace SEL.DAL.Repositories
                     {
                         var sqlResponseId = reader.GetInt32(reader.GetOrdinal("Id"));
                         var sqlResponseName = reader.GetString(reader.GetOrdinal("Name"));
-                        int parentDepartmentId = reader.IsDBNull(reader.GetOrdinal("ParentDepartmentId"))
-                            ? 0 
-                            : reader.GetInt32(reader.GetOrdinal("ParentDepartmentId"));
+                        var parentDepartmentId = reader["ParentDepartmentId"] != DBNull.Value ? (int?)reader["ParentDepartmentId"] : null;
                         
                         department = new Department
                         {

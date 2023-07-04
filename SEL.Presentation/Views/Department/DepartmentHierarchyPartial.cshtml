@@ -3,6 +3,7 @@
 <ul>
     <li>
         @Model.Name
+        @Html.Partial("WorkersCountPartial", Model.Workers.Count)
         @if (Model.Children.Count > 0)
         {
             <ul>

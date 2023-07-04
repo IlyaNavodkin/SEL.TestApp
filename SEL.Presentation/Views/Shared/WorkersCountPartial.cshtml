@@ -1,0 +1,14 @@
+﻿@model int
+
+@if (Model == 1)
+{
+    <span>(@Model сотрудник)</span> 
+}
+else if (Model > 1 && Model < 5)
+{
+    <span>(@Model сотрудникa)</span>
+}
+else
+{
+    <span>(@Model сотрудников)</span>
+}

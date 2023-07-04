@@ -12,7 +12,7 @@ namespace SEL.BLL
         {
             services.AddTransient<IWorkerService, WorkerService>();
             services.AddTransient<IDepartmentService, DepartmentService>();
-            services.AddTransient<IDepartmentHierarchyService, DepartmentHierarchyServiceService>();
+            services.AddTransient<IDepartmentHierarchyService, DepartmentHierarchyService>();
 
             return services;
         }

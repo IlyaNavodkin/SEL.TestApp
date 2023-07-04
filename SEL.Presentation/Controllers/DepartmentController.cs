@@ -19,39 +19,32 @@ namespace SEL.Presentation.Controllers
         public IActionResult Index()
         {
             var departments = departmentRepository.GetAll().ToList();
-            var departmentHierarchyViewModels = CreateDepartmentHierarchy(departments);
+            var departmentHierarchyViewModels = BuildDepartmentHierarchy(departments);
             
             return View(departmentHierarchyViewModels);
         }
         
-        public List<DepartmentHierarchyViewModel> CreateDepartmentHierarchy(List<Department> departments)
+        public List<DepartmentHierarchyViewModel> BuildDepartmentHierarchy(List<Department> departments)
         {
-            var departmentMap = new Dictionary<int, DepartmentHierarchyViewModel>();
-
-            foreach (var department in departments)
+            var departmentDictionary = departments.ToDictionary(d => d.Id, d => new DepartmentHierarchyViewModel
             {
-                var departmentHierarchy = new DepartmentHierarchyViewModel
-                {
-                    Id = department.Id,
-                    Name = department.Name
-                };
-
-                departmentMap[department.Id] = departmentHierarchy;
-            }
+                Id = d.Id,
+                Name = d.Name,
+                Children = new List<DepartmentHierarchyViewModel>()
+            });
 
             foreach (var department in departments)
             {
                 if (department.ParentDepartmentId.HasValue)
                 {
-                    var parentDepartment = departmentMap[department.ParentDepartmentId.Value];
-                    var childDepartment = departmentMap[department.Id];
-                    parentDepartment.Children.Add(childDepartment);
+                    if (departmentDictionary.TryGetValue(department.ParentDepartmentId.Value, out var parentDepartment))
+                    {
+                        parentDepartment.Children.Add(departmentDictionary[department.Id]);
+                    }
                 }
             }
 
-            var rootDepartments = departmentMap.Values
-                .Where(d => !departmentMap.ContainsKey(d.ParentDepartment?.Id ?? 0))
-                .ToList();
+            var rootDepartments = departmentDictionary.Values.Where(d => !departments.Any(dep => dep.Id == d.Id && dep.ParentDepartmentId.HasValue)).ToList();
 
             return rootDepartments;
         }

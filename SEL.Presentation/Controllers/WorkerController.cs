@@ -33,7 +33,7 @@ namespace SEL.Presentation.Controllers
             return View(workerViewModels);
         }
         
-        [HttpGet]
+        [HttpPost]
         public IActionResult Delete(int id)
         {
             _workerRepository.Delete(id);

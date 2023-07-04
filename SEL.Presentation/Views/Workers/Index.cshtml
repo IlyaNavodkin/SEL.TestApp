@@ -7,8 +7,8 @@
 
 <h1>Список работников</h1>
 
-<table>
-    <thead>
+<table class="table table-striped">
+    <thead class="thead-dark">
     <tr>
         <th>ID</th>
         <th>Имя</th>
@@ -28,9 +28,14 @@
             <td>@worker.LastName</td>
             <td>@worker.PersonnelNumber</td>
             <td>
-                <div>
-                    <a class="btn btn-info" asp-action="Edit" asp-route-userId="@worker.Id">Изменить</a>
-                    <button class="btn btn-danger" asp-action="Delete" asp-route-Id="@worker.Id">Удалить</button>
+                <div class="d-flex">
+                    <a class="btn btn-info btn-sm" asp-action="Edit" asp-route-userId="@worker.Id">Изменить</a>
+                    <form asp-action="Delete"  asp-route-Id="@worker.Id"
+                          method="post">
+                        <button class="btn btn-sm btn-danger" type="submit">
+                            Удалить
+                        </button>
+                    </form>
                 </div>
             </td>
         </tr>

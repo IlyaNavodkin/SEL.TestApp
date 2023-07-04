@@ -1,0 +1,46 @@
+﻿@model SEL.Presentation.ViewModels.WorkerDepartmentViewModel
+
+@{
+    ViewBag.Title = "Изменить данные работника";
+    Layout = "_Layout";
+}
+
+<h2>Изменить данные работника</h2>
+
+<form asp-action="Edit" asp-controller="Workers" method="post">
+    <div class="form-group">
+        <input type="hidden" asp-for="Worker.Id"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="Worker.FirstName" class="control-panel">Имя работника</label>
+        <input type="text" asp-for="Worker.FirstName"/>
+        <span asp-validation-for="Worker.FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Worker.LastName" class="control-panel">Фамилия работника</label>
+        <input type="text" asp-for="Worker.LastName"/>
+        <span asp-validation-for="Worker.LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Worker.MidName" class="control-panel">Отчество работника</label>
+        <input type="text" asp-for="Worker.MidName"/>
+        <span asp-validation-for="Worker.MidName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Worker.PersonnelNumber" class="control-panel">Персональный номер сотрудника</label>
+        <input type="text" asp-for="Worker.PersonnelNumber"/>
+        <span asp-validation-for="Worker.PersonnelNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Worker.DepartmentId" class="control-panel">Отдел сотрудника</label>
+        <select asp-for="Worker.DepartmentId" class="form-control">
+            @foreach (var department in Model.Departments)
+            {
+                <option value="@department.Id">@department.Name</option>
+            }
+        </select>        
+        <span asp-validation-for="Worker.DepartmentId" class="text-danger"></span>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>

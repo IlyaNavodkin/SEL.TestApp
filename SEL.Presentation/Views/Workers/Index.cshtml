@@ -1,0 +1,39 @@
+﻿@model System.Collections.Generic.List<SEL.Presentation.ViewModels.WorkerViewModel>
+
+@{
+    ViewBag.Title = "Работники";
+    Layout = "_Layout";
+}
+
+<h1>Список работников</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Отчество</th>
+        <th>Фамилия</th>
+        <th>Табельный номер</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var worker in Model)
+    {
+        <tr>
+            <td>@worker.Id</td>
+            <td>@worker.FirstName</td>
+            <td>@worker.MidName</td>
+            <td>@worker.LastName</td>
+            <td>@worker.PersonnelNumber</td>
+            <td>
+                <div>
+                    <a class="btn btn-info" asp-action="Edit" asp-route-userId="@worker.Id">Изменить</a>
+                    <button class="btn btn-danger" asp-action="Delete" asp-route-Id="@worker.Id">Удалить</button>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

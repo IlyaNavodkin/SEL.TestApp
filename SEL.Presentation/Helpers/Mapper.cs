@@ -4,7 +4,7 @@ using SEL.Presentation.ViewModels;
 
 namespace SEL.Presentation.Helpers
 {
-    public static class Mapper
+    public class Mapper
     {
         public static Worker ConvertToWorker(WorkerViewModel viewModel)
         {
